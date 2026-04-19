@@ -17,6 +17,223 @@ const state = {
 const STORAGE_KEY = 'tabGemPreferences';
 const STASH_STORAGE_KEY = 'tabGemStashItems';
 const BOOKMARK_FOLDER_TITLE = 'TabGem';
+const localeCode = detectLocale();
+const localeTag = localeCode === 'zh' ? 'zh-CN' : 'en-US';
+
+const MESSAGES = {
+  en: {
+    pageTitle: 'TabGem',
+    eyebrow: 'History, distilled',
+    heroSubtitle: 'A warm, structured view of your recent browsing history. Filter it, group it, save it, and turn it into a daily note.',
+    selected: 'Selected',
+    domains: 'Domains',
+    entries: 'Entries',
+    timeWindow: 'Time window',
+    start: 'Start',
+    end: 'End',
+    applyRange: 'Apply range',
+    selectVisible: 'Select visible',
+    unselectVisible: 'Unselect visible',
+    refresh: 'Refresh',
+    clearSelection: 'Clear selection',
+    saveToBookmarks: 'Save to bookmarks',
+    addToStash: 'Add to stash',
+    openSelected: 'Open selected',
+    exportMarkdown: 'Export Markdown',
+    generateDailyNote: 'Generate daily note',
+    stash: 'Stash',
+    savedCount: '{count} saved',
+    stashEmpty: 'Nothing in your temporary pool yet. Select a few links and stash them here.',
+    clearStash: 'Clear stash',
+    remove: 'Remove',
+    dailyNoteDraft: 'Daily note draft',
+    localSummary: 'Local summary',
+    copy: 'Copy',
+    downloadNote: 'Download note',
+    groupedByDomain: 'Grouped by domain',
+    loading: 'Loading...',
+    searchPlaceholder: 'Search titles, domains, or URLs...',
+    selectedUrls: 'Selected URLs',
+    currentWindow: 'Current window',
+    waitingForFirstSync: 'Waiting for first sync',
+    toggleDomain: 'Toggle domain',
+    selectDomain: 'Select domain',
+    expand: 'Expand',
+    collapse: 'Collapse',
+    goodMorning: 'Good morning',
+    goodAfternoon: 'Good afternoon',
+    goodEvening: 'Good evening',
+    greeting: '{greeting}, here\'s your TabGem',
+    unselectedVisibleToast: 'Unselected all visible URLs',
+    selectedVisibleToast: 'Selected all visible URLs',
+    selectionCleared: 'Selection cleared',
+    selectAtLeastOne: 'Select at least one URL first',
+    bookmarksPermissionMissing: 'Bookmarks permission is not active. Reload the extension and try again.',
+    savedLinksToBookmarks: 'Saved {count} {linkWord} to {folder}',
+    allSelectedAlreadyBookmarked: 'All selected links were already in {folder}',
+    noLinksSavedToBookmarks: 'No links were saved to bookmarks',
+    bookmarksSaveFailed: 'Could not save bookmarks. Try reloading the extension.',
+    addedToStash: 'Added {count} {linkWord} to your stash',
+    alreadyInStash: 'Those links are already in your stash',
+    stashEmptyToast: 'Your stash is empty',
+    savedStashToBookmarks: 'Saved {count} stash {linkWord} to {folder}',
+    allStashAlreadyBookmarked: 'All stash links were already in {folder}',
+    stashBookmarksSaveFailed: 'Could not save stash to bookmarks',
+    stashAlreadyEmpty: 'Your stash is already empty',
+    stashCleared: 'Cleared your stash',
+    openedSelected: 'Opened {count} selected {urlWord}',
+    markdownExportStarted: 'Markdown export started',
+    summaryMeta: '{links} links across {domains} domains',
+    dailyNoteReady: 'Daily note draft is ready',
+    dailyNoteCopied: 'Daily note copied',
+    dailyNoteDownloadStarted: 'Daily note download started',
+    historyLoadFailed: 'Could not load history',
+    noMatchingHistory: 'No matching history',
+    noMatchingHistoryHint: 'Try a wider time range or refresh again. Only regular web URLs are shown here.',
+    domainVisits: '{count} {visitWord}',
+    domainsCount: '{count} {domainWord}',
+    lastRefreshed: 'Last refreshed {time} · {date}',
+    removedFromStash: 'Removed link from stash',
+    markdownTitle: '# Browsing roundup ({date})',
+    dailyNoteTitle: '# Daily browsing note · {date}',
+    snapshot: '## Snapshot',
+    timeWindowLine: '- Time window: {value}',
+    selectedLinksLine: '- Selected links: {count}',
+    domainsCoveredLine: '- Domains covered: {count}',
+    focusDomains: '## Focus domains',
+    suggestedWorkLog: '## Suggested work log',
+    strongestConcentration: 'Today I reviewed {links} pages across {domains} domains. The strongest concentration was around {focus}.',
+    mainThemesTouched: 'The main themes I touched were:',
+    linkAppendix: '## Link appendix',
+    generatedLocally: 'Generated locally on {date} at {time}.',
+    last4Hours: 'the last 4 hours',
+    last3Days: 'the last 3 days',
+    last7Days: 'the last 7 days',
+    customTimeRange: 'your custom time range',
+    last24Hours: 'the last 24 hours',
+    unknownTime: 'Unknown time',
+    justSaved: 'Just saved',
+    unknown: 'unknown',
+    domainSummary: '{count} unique {pageWord} captured here. Most recent visit was {time}.',
+    recentResearch: 'recent research',
+    linkWordOne: 'link',
+    linkWordOther: 'links',
+    pageWordOne: 'page',
+    pageWordOther: 'pages',
+    visitWordOne: 'visit',
+    visitWordOther: 'visits',
+    domainWordOne: 'domain',
+    domainWordOther: 'domains',
+    urlWordOne: 'URL',
+    urlWordOther: 'URLs',
+  },
+  zh: {
+    pageTitle: 'TabGem',
+    eyebrow: '浏览历史凝结',
+    heroSubtitle: '把最近的浏览历史整理成一个更温和、更清晰的视图。你可以筛选、分组、保存，并把它转成一份每日笔记。',
+    selected: '已选中',
+    domains: '域名数',
+    entries: '链接数',
+    timeWindow: '时间范围',
+    start: '开始时间',
+    end: '结束时间',
+    applyRange: '应用范围',
+    selectVisible: '选中当前可见',
+    unselectVisible: '取消当前可见',
+    refresh: '刷新',
+    clearSelection: '清空选择',
+    saveToBookmarks: '保存到书签',
+    addToStash: '加入暂存池',
+    openSelected: '打开所选',
+    exportMarkdown: '导出 Markdown',
+    generateDailyNote: '生成日报草稿',
+    stash: '暂存池',
+    savedCount: '已保存 {count} 条',
+    stashEmpty: '暂存池里还没有内容。先选中几条链接，再把它们放进来。',
+    clearStash: '清空暂存池',
+    remove: '移除',
+    dailyNoteDraft: '日报草稿',
+    localSummary: '本地生成',
+    copy: '复制',
+    downloadNote: '下载笔记',
+    groupedByDomain: '按域名分组',
+    loading: '加载中...',
+    searchPlaceholder: '搜索标题、域名或链接...',
+    selectedUrls: '已选链接',
+    currentWindow: '当前窗口',
+    waitingForFirstSync: '等待首次同步',
+    toggleDomain: '切换域名展开状态',
+    selectDomain: '选中这个域名',
+    expand: '展开',
+    collapse: '收起',
+    goodMorning: '早上好',
+    goodAfternoon: '下午好',
+    goodEvening: '晚上好',
+    greeting: '{greeting}，这是你的 TabGem',
+    unselectedVisibleToast: '已取消当前可见链接',
+    selectedVisibleToast: '已选中当前可见链接',
+    selectionCleared: '已清空选择',
+    selectAtLeastOne: '请先至少选中一条链接',
+    bookmarksPermissionMissing: '书签权限还没有生效，请重新加载扩展后再试。',
+    savedLinksToBookmarks: '已保存 {count} 条链接到 {folder}',
+    allSelectedAlreadyBookmarked: '所选链接都已经在 {folder} 里了',
+    noLinksSavedToBookmarks: '没有新的链接被保存到书签',
+    bookmarksSaveFailed: '保存书签失败，请重新加载扩展后再试。',
+    addedToStash: '已加入暂存池 {count} 条链接',
+    alreadyInStash: '这些链接已经在暂存池里了',
+    stashEmptyToast: '暂存池还是空的',
+    savedStashToBookmarks: '已把暂存池中的 {count} 条链接保存到 {folder}',
+    allStashAlreadyBookmarked: '暂存池里的链接都已经在 {folder} 里了',
+    stashBookmarksSaveFailed: '保存暂存池到书签失败',
+    stashAlreadyEmpty: '暂存池已经是空的了',
+    stashCleared: '已清空暂存池',
+    openedSelected: '已打开 {count} 条所选链接',
+    markdownExportStarted: '已开始导出 Markdown',
+    summaryMeta: '{domains} 个域名，共 {links} 条链接',
+    dailyNoteReady: '日报草稿已经生成',
+    dailyNoteCopied: '日报草稿已复制',
+    dailyNoteDownloadStarted: '已开始下载日报草稿',
+    historyLoadFailed: '历史记录加载失败',
+    noMatchingHistory: '没有匹配到历史记录',
+    noMatchingHistoryHint: '可以试试放宽时间范围，或者刷新一次。这里默认只展示常规网页链接。',
+    domainVisits: '{count} 次访问',
+    domainsCount: '{count} 个域名',
+    lastRefreshed: '上次刷新于 {date} {time}',
+    removedFromStash: '已从暂存池移除这条链接',
+    markdownTitle: '# 浏览历史整理 ({date})',
+    dailyNoteTitle: '# 每日浏览笔记 · {date}',
+    snapshot: '## 概览',
+    timeWindowLine: '- 时间范围：{value}',
+    selectedLinksLine: '- 已选链接：{count}',
+    domainsCoveredLine: '- 涉及域名：{count}',
+    focusDomains: '## 重点域名',
+    suggestedWorkLog: '## 建议工作记录',
+    strongestConcentration: '今天我浏览了 {domains} 个域名下的 {links} 个页面，重点主要集中在 {focus}。',
+    mainThemesTouched: '我这次触及的主要主题包括：',
+    linkAppendix: '## 链接附录',
+    generatedLocally: '本地生成于 {date} {time}。',
+    last4Hours: '最近 4 小时',
+    last3Days: '最近 3 天',
+    last7Days: '最近 7 天',
+    customTimeRange: '自定义时间范围',
+    last24Hours: '最近 24 小时',
+    unknownTime: '未知时间',
+    justSaved: '刚刚保存',
+    unknown: '未知',
+    domainSummary: '这里收录了 {count} 个不同页面，最近一次访问时间是 {time}。',
+    recentResearch: '最近浏览的内容',
+    linkWordOne: '条链接',
+    linkWordOther: '条链接',
+    pageWordOne: '个页面',
+    pageWordOther: '个页面',
+    visitWordOne: '次访问',
+    visitWordOther: '次访问',
+    domainWordOne: '个域名',
+    domainWordOther: '个域名',
+    urlWordOne: '条链接',
+    urlWordOther: '条链接',
+  },
+};
 
 const elements = {
   presetGroup: document.getElementById('presetGroup'),
@@ -59,19 +276,27 @@ const elements = {
   historyRowTemplate: document.getElementById('historyRowTemplate'),
 };
 
-const friendlyDate = new Intl.DateTimeFormat('en-US', {
+const friendlyDate = new Intl.DateTimeFormat(localeTag, {
   weekday: 'long',
   month: 'long',
   day: 'numeric',
   year: 'numeric',
 });
 
-const timeFormatter = new Intl.DateTimeFormat('en-US', {
+const timeFormatter = new Intl.DateTimeFormat(localeTag, {
   hour: 'numeric',
   minute: '2-digit',
 });
 
+const shortDateFormatter = new Intl.DateTimeFormat(
+  localeTag,
+  localeCode === 'zh'
+    ? { month: 'numeric', day: 'numeric' }
+    : { month: 'short', day: 'numeric' }
+);
+
 async function init() {
+  applyStaticTranslations();
   await restorePreferences();
   await loadStash();
   applyPreferenceInputs();
@@ -79,6 +304,80 @@ async function init() {
   updateGreeting();
   renderStash();
   await refreshHistory();
+}
+
+function detectLocale() {
+  const raw = (chrome.i18n?.getUILanguage?.() || navigator.language || 'en').toLowerCase();
+  return raw.startsWith('zh') ? 'zh' : 'en';
+}
+
+function t(key, vars = {}) {
+  const dict = MESSAGES[localeCode] || MESSAGES.en;
+  const template = dict[key] || MESSAGES.en[key] || key;
+  return template.replace(/\{(\w+)\}/g, (_match, token) => String(vars[token] ?? ''));
+}
+
+function pluralKey(base, count) {
+  return `${base}${count === 1 ? 'One' : 'Other'}`;
+}
+
+function countWord(base, count) {
+  return t(pluralKey(base, count));
+}
+
+function applyStaticTranslations() {
+  document.documentElement.lang = localeCode === 'zh' ? 'zh-CN' : 'en';
+  document.title = t('pageTitle');
+  document.querySelector('.eyebrow').textContent = t('eyebrow');
+  document.querySelector('.hero-subtitle').textContent = t('heroSubtitle');
+
+  const heroLabels = document.querySelectorAll('.hero-stat-label');
+  if (heroLabels[0]) heroLabels[0].textContent = t('selected');
+  if (heroLabels[1]) heroLabels[1].textContent = t('domains');
+  if (heroLabels[2]) heroLabels[2].textContent = t('entries');
+
+  const sectionHeaders = document.querySelectorAll('.section-header > h2');
+  if (sectionHeaders[0]) sectionHeaders[0].textContent = t('timeWindow');
+  if (sectionHeaders[1]) sectionHeaders[1].textContent = t('stash');
+  if (sectionHeaders[2]) sectionHeaders[2].textContent = t('dailyNoteDraft');
+  if (sectionHeaders[3]) sectionHeaders[3].textContent = t('groupedByDomain');
+
+  const customLabels = elements.customRange.querySelectorAll('label span');
+  if (customLabels[0]) customLabels[0].textContent = t('start');
+  if (customLabels[1]) customLabels[1].textContent = t('end');
+
+  const presetLabels = {
+    '4h': localeCode === 'zh' ? '4 小时' : '4 hours',
+    '24h': localeCode === 'zh' ? '24 小时' : '24 hours',
+    '3d': localeCode === 'zh' ? '3 天' : '3 days',
+    '7d': localeCode === 'zh' ? '7 天' : '7 days',
+    custom: localeCode === 'zh' ? '自定义' : 'Custom',
+  };
+  for (const button of elements.presetGroup.querySelectorAll('[data-range]')) {
+    button.textContent = presetLabels[button.dataset.range] || button.textContent;
+  }
+
+  elements.applyCustomRange.textContent = t('applyRange');
+  elements.clearSelection.textContent = t('clearSelection');
+  elements.refreshHistory.textContent = t('refresh');
+  elements.saveToBookmarks.textContent = t('saveToBookmarks');
+  elements.addToStash.textContent = t('addToStash');
+  elements.openSelected.textContent = t('openSelected');
+  elements.exportMarkdown.textContent = t('exportMarkdown');
+  elements.generateSummary.textContent = t('generateDailyNote');
+  elements.saveStashToBookmarks.textContent = t('saveToBookmarks');
+  elements.clearStash.textContent = t('clearStash');
+  elements.stashEmpty.textContent = t('stashEmpty');
+  elements.summaryMeta.textContent = t('localSummary');
+  elements.copySummary.textContent = t('copy');
+  elements.downloadSummary.textContent = t('downloadNote');
+  elements.historySearch.placeholder = t('searchPlaceholder');
+  elements.groupMeta.textContent = t('loading');
+  elements.lastRefresh.textContent = t('waitingForFirstSync');
+
+  const footerLabels = document.querySelectorAll('.stat-label');
+  if (footerLabels[0]) footerLabels[0].textContent = t('selectedUrls');
+  if (footerLabels[1]) footerLabels[1].textContent = t('currentWindow');
 }
 
 async function restorePreferences() {
@@ -148,7 +447,7 @@ function attachEvents() {
       }
       renderGroups();
       updateStats();
-      showToast('Unselected all visible URLs');
+      showToast(t('unselectedVisibleToast'));
       return;
     }
 
@@ -158,14 +457,14 @@ function attachEvents() {
 
     renderGroups();
     updateStats();
-    showToast('Selected all visible URLs');
+    showToast(t('selectedVisibleToast'));
   });
 
   elements.clearSelection.addEventListener('click', () => {
     state.selectedUrls.clear();
     renderGroups();
     updateStats();
-    showToast('Selection cleared');
+    showToast(t('selectionCleared'));
   });
 
   elements.refreshHistory.addEventListener('click', async () => {
@@ -175,145 +474,157 @@ function attachEvents() {
   elements.saveToBookmarks.addEventListener('click', async () => {
     const items = getSelectedItems();
     if (items.length === 0) {
-      showToast('Select at least one URL first');
+      showToast(t('selectAtLeastOne'));
       return;
     }
 
     if (!chrome.bookmarks?.create) {
-      showToast('Bookmarks permission is not active. Reload the extension and try again.');
+      showToast(t('bookmarksPermissionMissing'));
       return;
     }
 
     try {
       const result = await saveSelectedToBookmarks(items);
       if (result.created > 0) {
-        showToast(`Saved ${result.created} link${result.created === 1 ? '' : 's'} to ${BOOKMARK_FOLDER_TITLE}`);
+        showToast(t('savedLinksToBookmarks', {
+          count: result.created,
+          linkWord: countWord('linkWord', result.created),
+          folder: BOOKMARK_FOLDER_TITLE,
+        }));
         await openBookmarkFolder(result.folderId);
         return;
       }
 
       if (result.skipped > 0) {
-        showToast(`All selected links were already in ${BOOKMARK_FOLDER_TITLE}`);
+        showToast(t('allSelectedAlreadyBookmarked', { folder: BOOKMARK_FOLDER_TITLE }));
         await openBookmarkFolder(result.folderId);
         return;
       }
 
-      showToast('No links were saved to bookmarks');
+      showToast(t('noLinksSavedToBookmarks'));
     } catch (error) {
       console.error('[tab-gem] bookmark save failed', error);
-      showToast('Could not save bookmarks. Try reloading the extension.');
+      showToast(t('bookmarksSaveFailed'));
     }
   });
 
   elements.addToStash.addEventListener('click', async () => {
     const items = getSelectedItems();
     if (items.length === 0) {
-      showToast('Select at least one URL first');
+      showToast(t('selectAtLeastOne'));
       return;
     }
 
     const added = await addItemsToStash(items);
-    showToast(added > 0 ? `Added ${added} link${added === 1 ? '' : 's'} to your stash` : 'Those links are already in your stash');
+    showToast(added > 0
+      ? t('addedToStash', { count: added, linkWord: countWord('linkWord', added) })
+      : t('alreadyInStash'));
   });
 
   elements.saveStashToBookmarks.addEventListener('click', async () => {
     if (state.stashItems.length === 0) {
-      showToast('Your stash is empty');
+      showToast(t('stashEmptyToast'));
       return;
     }
 
     try {
       const result = await saveSelectedToBookmarks(state.stashItems);
       if (result.created > 0) {
-        showToast(`Saved ${result.created} stash link${result.created === 1 ? '' : 's'} to ${BOOKMARK_FOLDER_TITLE}`);
+        showToast(t('savedStashToBookmarks', {
+          count: result.created,
+          linkWord: countWord('linkWord', result.created),
+          folder: BOOKMARK_FOLDER_TITLE,
+        }));
         await openBookmarkFolder(result.folderId);
         return;
       }
 
-      showToast(`All stash links were already in ${BOOKMARK_FOLDER_TITLE}`);
+      showToast(t('allStashAlreadyBookmarked', { folder: BOOKMARK_FOLDER_TITLE }));
       await openBookmarkFolder(result.folderId);
     } catch (error) {
       console.error('[tab-gem] stash bookmark save failed', error);
-      showToast('Could not save stash to bookmarks');
+      showToast(t('stashBookmarksSaveFailed'));
     }
   });
 
   elements.clearStash.addEventListener('click', async () => {
     if (state.stashItems.length === 0) {
-      showToast('Your stash is already empty');
+      showToast(t('stashAlreadyEmpty'));
       return;
     }
 
     state.stashItems = [];
     await persistStash();
     renderStash();
-    showToast('Cleared your stash');
+    showToast(t('stashCleared'));
   });
 
   elements.openSelected.addEventListener('click', async () => {
     const items = getSelectedItems();
     if (items.length === 0) {
-      showToast('Select at least one URL first');
+      showToast(t('selectAtLeastOne'));
       return;
     }
 
     await Promise.all(items.map((item) => chrome.tabs.create({ url: item.url, active: false })));
-    showToast(`Opened ${items.length} selected URL${items.length === 1 ? '' : 's'}`);
+    showToast(t('openedSelected', { count: items.length, urlWord: countWord('urlWord', items.length) }));
   });
 
   elements.exportMarkdown.addEventListener('click', async () => {
     const items = getSelectedItems();
     if (items.length === 0) {
-      showToast('Select at least one URL first');
+      showToast(t('selectAtLeastOne'));
       return;
     }
 
     const markdown = generateMarkdown(items);
     await downloadTextFile(markdown, `tab-gem-${fileDateStamp()}.md`);
-    showToast('Markdown export started');
+    showToast(t('markdownExportStarted'));
   });
 
   elements.generateSummary.addEventListener('click', async () => {
     const items = getSelectedItems();
     if (items.length === 0) {
-      showToast('Select at least one URL first');
+      showToast(t('selectAtLeastOne'));
       return;
     }
 
     state.summaryMarkdown = generateDailyNote(items);
     elements.summaryOutput.value = state.summaryMarkdown;
-    elements.summaryMeta.textContent = `${items.length} links across ${groupItemsByDomain(items).length} domains`;
+    elements.summaryMeta.textContent = t('summaryMeta', {
+      links: items.length,
+      domains: groupItemsByDomain(items).length,
+    });
     elements.summaryPanel.hidden = false;
-    showToast('Daily note draft is ready');
+    showToast(t('dailyNoteReady'));
   });
 
   elements.copySummary.addEventListener('click', async () => {
     if (!state.summaryMarkdown) return;
     await navigator.clipboard.writeText(state.summaryMarkdown);
-    showToast('Daily note copied');
+    showToast(t('dailyNoteCopied'));
   });
 
   elements.downloadSummary.addEventListener('click', async () => {
     if (!state.summaryMarkdown) return;
     await downloadTextFile(state.summaryMarkdown, `tab-gem-daily-note-${fileDateStamp()}.md`);
-    showToast('Daily note download started');
+    showToast(t('dailyNoteDownloadStarted'));
   });
 
   elements.stashList.addEventListener('click', async (event) => {
     const removeButton = event.target.closest('[data-remove-stash-url]');
     if (removeButton) {
       await removeStashItem(removeButton.dataset.removeStashUrl);
-      return;
     }
   });
 }
 
 function updateGreeting() {
   const hour = new Date().getHours();
-  let greeting = 'Good evening';
-  if (hour < 12) greeting = 'Good morning';
-  else if (hour < 17) greeting = 'Good afternoon';
-  document.getElementById('greeting').textContent = `${greeting}, here's your TabGem`;
+  let greeting = t('goodEvening');
+  if (hour < 12) greeting = t('goodMorning');
+  else if (hour < 17) greeting = t('goodAfternoon');
+  document.getElementById('greeting').textContent = t('greeting', { greeting });
 }
 
 function syncRangeUI() {
@@ -370,7 +681,7 @@ async function refreshHistory() {
     chrome.runtime.sendMessage({ type: 'tab-gem:refresh-badge' }).catch(() => {});
   } catch (error) {
     console.error('[tab-gem] history load failed', error);
-    elements.groupMeta.textContent = 'Could not load history';
+    elements.groupMeta.textContent = t('historyLoadFailed');
   } finally {
     setLoading(false);
   }
@@ -386,7 +697,7 @@ function setLoading(isLoading) {
   elements.generateSummary.disabled = isLoading;
 
   if (isLoading) {
-    elements.groupMeta.textContent = 'Loading...';
+    elements.groupMeta.textContent = t('loading');
   }
 }
 
@@ -509,13 +820,13 @@ function renderGroups() {
       <article class="mission-card">
         <div class="mission-content">
           <div class="mission-top">
-            <span class="mission-name">No matching history</span>
+            <span class="mission-name">${escapeHtml(t('noMatchingHistory'))}</span>
           </div>
-          <div class="mission-summary">Try a wider time range or refresh again. Only regular web URLs are shown here.</div>
+          <div class="mission-summary">${escapeHtml(t('noMatchingHistoryHint'))}</div>
         </div>
       </article>
     `;
-    elements.groupMeta.textContent = '0 domains';
+    elements.groupMeta.textContent = t('domainsCount', { count: 0, domainWord: countWord('domainWord', 0) });
     return;
   }
 
@@ -533,7 +844,10 @@ function renderGroups() {
 
     card.querySelector('.mission-name').textContent = group.label;
     card.querySelector('.mission-tag').textContent = group.domain;
-    card.querySelector('.domain-visits').textContent = `${group.items.length} visit${group.items.length === 1 ? '' : 's'}`;
+    card.querySelector('.domain-visits').textContent = t('domainVisits', {
+      count: group.items.length,
+      visitWord: countWord('visitWord', group.items.length),
+    });
     card.querySelector('.mission-summary').textContent = buildDomainSummary(group);
 
     const groupCheckbox = card.querySelector('.group-checkbox');
@@ -559,7 +873,9 @@ function renderGroups() {
 
     collapseToggle.addEventListener('click', toggleCollapse);
     miniAction.addEventListener('click', toggleCollapse);
-    miniAction.textContent = isCollapsed ? 'Expand' : 'Collapse';
+    collapseToggle.setAttribute('aria-label', t('toggleDomain'));
+    card.querySelector('.checkbox-label span').textContent = t('selectDomain');
+    miniAction.textContent = isCollapsed ? t('expand') : t('collapse');
 
     const pages = card.querySelector('.mission-pages');
     for (const item of group.items) {
@@ -593,7 +909,10 @@ function renderGroups() {
   }
 
   elements.domainGroups.appendChild(fragment);
-  elements.groupMeta.textContent = `${state.groups.length} domain${state.groups.length === 1 ? '' : 's'}`;
+  elements.groupMeta.textContent = t('domainsCount', {
+    count: state.groups.length,
+    domainWord: countWord('domainWord', state.groups.length),
+  });
 }
 
 function updateGroupSelectionState(card, group) {
@@ -614,16 +933,19 @@ function updateStats() {
 
   const visibleItems = state.groups.flatMap((group) => group.items);
   const allVisibleSelected = visibleItems.length > 0 && visibleItems.every((item) => state.selectedUrls.has(item.url));
-  elements.selectVisible.textContent = allVisibleSelected ? 'Unselect visible' : 'Select visible';
+  elements.selectVisible.textContent = allVisibleSelected ? t('unselectVisible') : t('selectVisible');
 }
 
 function updateRefreshMeta() {
   if (!state.lastSync) return;
-  elements.lastRefresh.textContent = `Last refreshed ${timeFormatter.format(state.lastSync)} · ${friendlyDate.format(state.lastSync)}`;
+  elements.lastRefresh.textContent = t('lastRefreshed', {
+    time: timeFormatter.format(state.lastSync),
+    date: friendlyDate.format(state.lastSync),
+  });
 }
 
 function renderStash() {
-  elements.stashCount.textContent = `${state.stashItems.length} saved`;
+  elements.stashCount.textContent = t('savedCount', { count: state.stashItems.length });
 
   if (state.stashItems.length === 0) {
     elements.stashEmpty.style.display = 'block';
@@ -642,7 +964,7 @@ function renderStash() {
         <span>${escapeHtml(item.domain || '')}</span>
         <span>${escapeHtml(formatSavedAt(item.savedAt))}</span>
       </div>
-      <button class="stash-remove" type="button" data-remove-stash-url="${escapeHtml(item.url)}">Remove</button>
+      <button class="stash-remove" type="button" data-remove-stash-url="${escapeHtml(item.url)}">${escapeHtml(t('remove'))}</button>
     </div>
   `).join('');
 }
@@ -674,7 +996,7 @@ async function removeStashItem(url) {
   state.stashItems = nextItems;
   await persistStash();
   renderStash();
-  showToast('Removed link from stash');
+  showToast(t('removedFromStash'));
 }
 
 async function saveSelectedToBookmarks(items) {
@@ -783,7 +1105,7 @@ function groupItemsByDomain(items) {
 function generateMarkdown(items) {
   const groups = groupItemsByDomain(items);
   const date = fileDateStamp();
-  const lines = [`# Browsing roundup (${date})`, ''];
+  const lines = [t('markdownTitle', { date }), ''];
 
   for (const group of groups) {
     lines.push(`## ${group.domain}`);
@@ -800,24 +1122,28 @@ function generateDailyNote(items) {
   const groups = groupItemsByDomain(items);
   const now = new Date();
   const lines = [
-    `# Daily browsing note · ${fileDateStamp()}`,
+    t('dailyNoteTitle', { date: fileDateStamp() }),
     '',
-    '## Snapshot',
-    `- Time window: ${rangeLabel(true)}`,
-    `- Selected links: ${items.length}`,
-    `- Domains covered: ${groups.length}`,
+    t('snapshot'),
+    t('timeWindowLine', { value: rangeLabel(true) }),
+    t('selectedLinksLine', { count: items.length }),
+    t('domainsCoveredLine', { count: groups.length }),
     '',
-    '## Focus domains',
+    t('focusDomains'),
   ];
 
   for (const group of groups.slice(0, 5)) {
-    lines.push(`- ${group.label} (${group.items.length} links)`);
+    lines.push(`- ${group.label} (${group.items.length}${localeCode === 'zh' ? ' 条链接' : ' links'})`);
   }
 
   lines.push('');
-  lines.push('## Suggested work log');
-  lines.push(`Today I reviewed ${items.length} pages across ${groups.length} domains. The strongest concentration was around ${groups.slice(0, 3).map((group) => group.label).join(', ') || 'recent research'}.`);
-  lines.push('The main themes I touched were:');
+  lines.push(t('suggestedWorkLog'));
+  lines.push(t('strongestConcentration', {
+    links: items.length,
+    domains: groups.length,
+    focus: groups.slice(0, 3).map((group) => group.label).join(localeCode === 'zh' ? '、' : ', ') || t('recentResearch'),
+  }));
+  lines.push(t('mainThemesTouched'));
 
   for (const group of groups) {
     const sampleTitles = group.items.slice(0, 3).map((item) => item.title || item.url);
@@ -825,10 +1151,13 @@ function generateDailyNote(items) {
   }
 
   lines.push('');
-  lines.push('## Link appendix');
+  lines.push(t('linkAppendix'));
   lines.push(generateMarkdown(items).trim());
   lines.push('');
-  lines.push(`Generated locally on ${friendlyDate.format(now)} at ${timeFormatter.format(now)}.`);
+  lines.push(t('generatedLocally', {
+    date: friendlyDate.format(now),
+    time: timeFormatter.format(now),
+  }));
 
   return lines.join('\n');
 }
@@ -849,21 +1178,25 @@ async function downloadTextFile(text, filename) {
 }
 
 function rangeLabel(long = false) {
-  if (state.range === '4h') return long ? 'the last 4 hours' : '4h';
-  if (state.range === '3d') return long ? 'the last 3 days' : '3d';
-  if (state.range === '7d') return long ? 'the last 7 days' : '7d';
-  if (state.range === 'custom') return long ? 'your custom time range' : 'custom';
-  return long ? 'the last 24 hours' : '24h';
+  if (state.range === '4h') return long ? t('last4Hours') : '4h';
+  if (state.range === '3d') return long ? t('last3Days') : '3d';
+  if (state.range === '7d') return long ? t('last7Days') : '7d';
+  if (state.range === 'custom') return long ? t('customTimeRange') : (localeCode === 'zh' ? '自定义' : 'custom');
+  return long ? t('last24Hours') : '24h';
 }
 
 function buildDomainSummary(group) {
   const firstVisit = group.items[0];
-  const latestTime = firstVisit ? formatVisitTime(firstVisit.lastVisitTime) : 'unknown';
-  return `${group.items.length} unique page${group.items.length === 1 ? '' : 's'} captured here. Most recent visit was ${latestTime}.`;
+  const latestTime = firstVisit ? formatVisitTime(firstVisit.lastVisitTime) : t('unknown');
+  return t('domainSummary', {
+    count: group.items.length,
+    pageWord: countWord('pageWord', group.items.length),
+    time: latestTime,
+  });
 }
 
 function formatVisitTime(timestamp) {
-  if (!timestamp) return 'Unknown time';
+  if (!timestamp) return t('unknownTime');
   const date = new Date(timestamp);
   if (isSameDay(date, new Date())) {
     return timeFormatter.format(date);
@@ -911,9 +1244,9 @@ function formatDisplayUrl(url) {
 }
 
 function formatSavedAt(savedAt) {
-  if (!savedAt) return 'Just saved';
+  if (!savedAt) return t('justSaved');
   const date = new Date(savedAt);
-  if (Number.isNaN(date.getTime())) return 'Just saved';
+  if (Number.isNaN(date.getTime())) return t('justSaved');
   if (isSameDay(date, new Date())) {
     return timeFormatter.format(date);
   }
@@ -922,10 +1255,7 @@ function formatSavedAt(savedAt) {
 }
 
 function formatShortDate(date) {
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-  }).format(date);
+  return shortDateFormatter.format(date);
 }
 
 function isSameDay(left, right) {
