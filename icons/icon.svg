@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="TabGem">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fffdf9"/>
+      <stop offset="100%" stop-color="#f3ede3"/>
+    </linearGradient>
+    <linearGradient id="diamond" x1="18%" y1="12%" x2="82%" y2="88%">
+      <stop offset="0%" stop-color="#f6d483"/>
+      <stop offset="45%" stop-color="#d59b32"/>
+      <stop offset="100%" stop-color="#8a5a18"/>
+    </linearGradient>
+  </defs>
+  <rect x="10" y="10" width="108" height="108" rx="28" fill="url(#bg)"/>
+  <rect x="10" y="10" width="108" height="108" rx="28" fill="none" stroke="#e8e2da" stroke-width="3"/>
+  <path d="M64 24 94 50 80 96 48 96 34 50Z" fill="url(#diamond)" stroke="#6e4411" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M64 24 48 50h32Z" fill="#f9e8b9" opacity=".92"/>
+  <path d="M34 50h60" stroke="#fff5d6" stroke-opacity=".88" stroke-width="4" stroke-linecap="round"/>
+  <path d="M48 50 64 96 80 50" fill="none" stroke="#fff5d6" stroke-opacity=".72" stroke-width="4" stroke-linejoin="round"/>
+  <circle cx="82" cy="40" r="4" fill="#fff8e3" opacity=".96"/>
+</svg>

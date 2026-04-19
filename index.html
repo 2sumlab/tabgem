@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TabGem</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">History, distilled</div>
+        <h1 id="greeting">TabGem</h1>
+        <p class="hero-subtitle">A warm, structured view of your recent browsing history. Filter it, group it, save it, and turn it into a daily note.</p>
+      </div>
+      <div class="hero-panel">
+        <div class="hero-stat">
+          <span class="hero-stat-label">Selected</span>
+          <span class="hero-stat-value" id="selectedCount">0</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-label">Domains</span>
+          <span class="hero-stat-value" id="domainCount">0</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-label">Entries</span>
+          <span class="hero-stat-value" id="entryCount">0</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="control-shell">
+      <div class="section-header">
+        <h2>Time window</h2>
+        <div class="section-line"></div>
+        <div class="section-count" id="rangeSummary">Last 24 hours</div>
+      </div>
+
+      <div class="toolbar">
+        <div class="preset-group" id="presetGroup">
+          <button class="preset-chip active" data-range="4h">4 hours</button>
+          <button class="preset-chip" data-range="24h">24 hours</button>
+          <button class="preset-chip" data-range="3d">3 days</button>
+          <button class="preset-chip" data-range="7d">7 days</button>
+          <button class="preset-chip" data-range="custom">Custom</button>
+        </div>
+
+        <div class="custom-range" id="customRange" hidden>
+          <label>
+            <span>Start</span>
+            <input type="datetime-local" id="customStart">
+          </label>
+          <label>
+            <span>End</span>
+            <input type="datetime-local" id="customEnd">
+          </label>
+          <button class="action-btn" id="applyCustomRange">Apply range</button>
+        </div>
+      </div>
+
+      <div class="toolbar toolbar-secondary">
+        <div class="selection-actions">
+          <button class="action-btn" id="selectVisible">Select visible</button>
+          <button class="action-btn" id="clearSelection">Clear selection</button>
+          <button class="action-btn" id="refreshHistory">Refresh</button>
+        </div>
+        <div class="batch-actions">
+          <button class="action-btn" id="saveToBookmarks">Save to bookmarks</button>
+          <button class="action-btn" id="addToStash">Add to stash</button>
+          <button class="action-btn save-tabs" id="openSelected">Open selected</button>
+          <button class="action-btn close-tabs" id="exportMarkdown">Export Markdown</button>
+          <button class="action-btn primary" id="generateSummary">Generate daily note</button>
+        </div>
+      </div>
+      <section class="stash-panel" id="stashPanel">
+        <div class="section-header stash-header">
+          <h2>Stash</h2>
+          <div class="section-line"></div>
+          <div class="section-count" id="stashCount">0 saved</div>
+          <button class="action-btn stash-clear-btn" id="saveStashToBookmarks">Save to bookmarks</button>
+          <button class="action-btn stash-clear-btn" id="clearStash">Clear stash</button>
+        </div>
+        <div class="stash-empty" id="stashEmpty">Nothing in your temporary pool yet. Select a few links and stash them here.</div>
+        <div class="stash-list" id="stashList"></div>
+      </section>
+    </section>
+
+    <section class="summary-panel" id="summaryPanel" hidden>
+      <div class="section-header">
+        <h2>Daily note draft</h2>
+        <div class="section-line"></div>
+        <div class="section-count" id="summaryMeta">Local summary</div>
+      </div>
+      <textarea id="summaryOutput" readonly></textarea>
+      <div class="summary-actions">
+        <button class="action-btn" id="copySummary">Copy</button>
+        <button class="action-btn primary" id="downloadSummary">Download note</button>
+      </div>
+    </section>
+
+    <section class="groups-shell">
+      <div class="section-header">
+        <h2>Grouped by domain</h2>
+        <div class="section-line"></div>
+        <div class="section-count" id="groupMeta">Loading...</div>
+      </div>
+
+      <div class="search-shell">
+        <input
+          type="search"
+          id="historySearch"
+          class="search-input"
+          placeholder="Search titles, domains, or URLs..."
+          autocomplete="off"
+          spellcheck="false"
+        >
+      </div>
+      <div class="missions" id="domainGroups"></div>
+    </section>
+
+    <footer>
+      <div class="footer-stats">
+        <div class="stat">
+          <div class="stat-num" id="footerSelected">0</div>
+          <div class="stat-label">Selected URLs</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" id="footerWindow">24h</div>
+          <div class="stat-label">Current window</div>
+        </div>
+      </div>
+      <div class="last-refresh" id="lastRefresh">Waiting for first sync</div>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </svg>
+    <span id="toastText"></span>
+  </div>
+
+  <template id="domainCardTemplate">
+    <article class="mission-card has-neutral-bar">
+      <div class="mission-content">
+        <div class="mission-top">
+          <button class="collapse-toggle" type="button" aria-label="Toggle domain"></button>
+          <span class="mission-name"></span>
+          <span class="mission-tag neutral"></span>
+          <span class="open-tabs-badge domain-visits"></span>
+        </div>
+        <div class="mission-summary"></div>
+        <div class="group-actions">
+          <label class="checkbox-label">
+            <input type="checkbox" class="group-checkbox">
+            <span>Select domain</span>
+          </label>
+          <button class="mini-action" type="button">Collapse</button>
+        </div>
+        <div class="mission-pages"></div>
+      </div>
+    </article>
+  </template>
+
+  <template id="historyRowTemplate">
+    <label class="page-chip">
+      <input type="checkbox" class="page-checkbox">
+      <span class="page-favicon" aria-hidden="true"></span>
+      <span class="page-text">
+        <span class="page-title"></span>
+        <span class="page-url"></span>
+      </span>
+      <span class="page-time"></span>
+    </label>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
